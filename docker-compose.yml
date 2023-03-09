@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  database:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-data:/data/db
+    restart: always
+    networks:
+      - mongo-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-data:/data
+    command: redis-server
+    restart: always
+    networks:
+      - mongo-network
+
+  app:
+    build: .
+    container_name: api-dictionary
+    ports:
+      - 3001:3001
+    networks:
+      - mongo-network
+    depends_on:
+      - database
+      - redis
+    restart: always
+
+volumes:
+  mongo-data:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  mongo-network:
+    driver: bridge

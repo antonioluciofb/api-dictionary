@@ -1,0 +1,593 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Fullstack Challenge 🏅 2022 - Dicionario de Inglês",
+        "description": "API para o desafio Fullstack 2022"
+    },
+    "host": "localhost:3001",
+    "basePath": "/",
+    "schemes": ["http"],
+    "securityDefinitions": {
+        "bearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "paths": {
+        "/auth/signup": {
+            "post": {
+                "tags": ["Autenticação"],
+                "summary": "Cria uma conta nova",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/signin": {
+            "post": {
+                "summary": "Efetua login com uma conta existente",
+                "tags": ["Autenticação"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/entries/en": {
+            "get": {
+                "summary": "Retorna uma lista de entradas em inglês",
+                "tags": ["Palavras"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Entradas encontradas",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalDocs": {
+                                    "type": "number"
+                                },
+                                "totalPages": {
+                                    "type": "number"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "page": {
+                                    "type": "number"
+                                },
+                                "hasPrev": {
+                                    "type": "boolean"
+                                },
+                                "hasNext": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/entries/en/{word}": {
+            "get": {
+                "summary": "Retorna uma entrada específica em inglês",
+                "tags": ["Palavras"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "word",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Entrada encontrada",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "word": {
+                                    "type": "string"
+                                },
+                                "phonetic": {
+                                    "type": "string"
+                                },
+                                "phonetics": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "text": {
+                                                "type": "string"
+                                            },
+                                            "audio": {
+                                                "type": "string"
+                                            },
+                                            "sourceUrl": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "meanings": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "partOfSpeech": {
+                                                "type": "string"
+                                            },
+                                            "definitions": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "definition": {
+                                                            "type": "string"
+                                                        },
+                                                        "example": {
+                                                            "type": "string"
+                                                        },
+                                                        "synonyms": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "antonyms": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "license": {
+                                    "type": "object",
+                                    "items": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "url": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "sourceUrl": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/entries/en/{word}/favorite": {
+            "post": {
+                "summary": "Adiciona uma entrada em inglês aos favoritos do usuário logado",
+                "tags": ["Palavras"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "word",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Entrada adicionada aos favoritos",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/entries/en/{word}/unfavorite": {
+            "delete": {
+                "summary": "Remove uma entrada em inglês dos favoritos do usuário logado",
+                "tags": ["Palavras"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "word",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Entrada removida dos favoritos",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me": {
+            "get": {
+                "summary": "Retorna informações do usuário logado",
+                "tags": ["Usuario"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Informações do usuário encontradas",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "wordsHistory": {
+                                    "type": "number"
+                                },
+                                "favoritesWords": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleta o usuário logado",
+                "tags": ["Usuario"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário removido",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me/history": {
+            "get": {
+                "summary": "Retorna o histórico de buscas do usuário logado",
+                "tags": ["Usuario"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Histórico encontrado",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalDocs": {
+                                    "type": "number"
+                                },
+                                "totalPages": {
+                                    "type": "number"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "word": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string"
+                                        },
+                                        "_id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "page": {
+                                    "type": "number"
+                                },
+                                "hasPrev": {
+                                    "type": "boolean"
+                                },
+                                "hasNext": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me/favorites": {
+            "get": {
+                "summary": "Retorna as entradas favoritas do usuário logado",
+                "tags": ["Usuario"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Entradas favoritas encontradas",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalDocs": {
+                                    "type": "number"
+                                },
+                                "totalPages": {
+                                    "type": "number"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "word": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string"
+                                        },
+                                        "_id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "page": {
+                                    "type": "number"
+                                },
+                                "hasPrev": {
+                                    "type": "boolean"
+                                },
+                                "hasNext": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
