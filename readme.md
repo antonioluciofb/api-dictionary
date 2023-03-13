@@ -1,6 +1,6 @@
 # Deploy
 
-Projeto disponivel em - [Api-Dictionary](https://api-dictionary.onrender.com)
+Projeto disponivel em - [Api-Dictionary](https://api-dictionary.onrender.com/api-docs)
 # Api Dictionary
 
 Este é um projeto de API RESTful que utiliza o Node.js com o framework Express para fornecer uma plataforma de dicionário online. Os dados do dicionário são armazenados em um banco de dados MongoDB, o que permite uma escalabilidade fácil e o manuseio eficiente dos dados.
